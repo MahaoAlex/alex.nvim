@@ -1,9 +1,13 @@
-# ☄️ Mars.nvim
+# ☄️ Mars.nvim (Alex 定制版)
 
 [English](README.md) | [中文](README_zh.md)
 
 个人 Neovim 和 tmux 配置，专注于现代开发体验、AI 辅助编程和生产力。
-基于 [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)。
+
+本项目是为 **Alex** 定制的版本，基于优秀的 [Mars.nvim](https://github.com/MarsWang42/mars.nvim)（其本身基于 [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)）。
+
+> [!IMPORTANT]
+> **尊重原作者版权：** 本项目 fork 自 [Mars.nvim](https://github.com/MarsWang42/mars.nvim)。核心架构和插件选择的所有权归原作者所有。此版本包含针对 Alex 开发环境的特定优化和修复。
 
 ![Screenshot](Screenshot.png)
 
@@ -14,7 +18,7 @@
 - **Neovim** ≥ 0.10（推荐 0.11+）
 - **Git**
 - **Nerd Font**（用于图标显示）
-- **Node.js**（用于 LSP 服务器）
+- **Node.js**（用于 LSP 服务器）- *注意：如果通过 Nodesource 安装，`npm` 已包含在内。请避免单独安装 `npm` 以防冲突。*
 - **ripgrep**（用于 telescope 搜索）
 
 ### 快速安装
@@ -25,6 +29,16 @@ cd ~/.config/mars.nvim
 chmod +x install.sh
 ./install.sh
 ```
+
+---
+
+## 🛠️ Alex 的定制内容
+
+- **环境修复：** 解决了 Ubuntu 系统下 `nodejs` 与 `npm` 的包冲突问题。
+- **AI 集成优化：** 针对 Claude 和 Gemini 助手进行了配置优化。
+- **工作流微调：** (根据需要添加具体的微调内容)
+
+---
 
 安装脚本会：
 - 在 `~/.config/nvim` 和 `~/.config/tmux` 创建符号链接

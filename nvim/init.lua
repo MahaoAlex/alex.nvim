@@ -46,7 +46,8 @@ require('lazy').setup({
           Right = '<Right> ',
           C = '<C-…> ',
           M = '<M-…> ',
-          D = '<D-…> ',
+          -- Avoid ambiguity: "D" here means the Command/Super modifier, not the letter D
+          D = '<Command-…> ',
           S = '<S-…> ',
           CR = '<CR> ',
           Esc = '<Esc> ',
@@ -72,6 +73,8 @@ require('lazy').setup({
       },
 
       spec = {
+        { '<leader>d', group = '[D]ebug' },
+        { '<leader>o', group = '[O]pencode' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
@@ -119,6 +122,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         go = { 'goimports', 'goimports-reviser', 'gofumpt' },
+        python = { 'isort', 'black' },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
       },

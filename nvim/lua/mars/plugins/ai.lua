@@ -54,4 +54,52 @@ return {
       { '<leader>gs', '<cmd>GeminiSend<cr>', mode = { 'v' }, desc = 'Send selection to Gemini' },
     },
   },
+  {
+    'NickvanDyke/opencode.nvim',
+    dependencies = {
+      {
+        'folke/snacks.nvim',
+        opts = {
+          input = {
+            submit = '<C-Enter>',
+          },
+        },
+      },
+    },
+    -- Use key-triggered lazy loading so the mappings work immediately
+    keys = {
+      { '<leader>o', nil, desc = 'Opencode' },
+      {
+        '<leader>oa',
+        function()
+          require('opencode').ask('@this: ', { submit = true })
+        end,
+        mode = { 'n', 'x' },
+        desc = 'Opencode: Ask current context',
+      },
+      { '<leader>ot', '<cmd>OpencodeToggle<cr>', desc = 'Opencode: Toggle panel' },
+      { '<leader>os', '<cmd>OpencodeSelect<cr>', desc = 'Opencode: Select prompt' },
+      {
+        '<leader>oc',
+        function()
+          require('opencode').command('session.list')
+        end,
+        desc = 'Opencode: List active sessions',
+      },
+    },
+    config = function()
+      vim.g.opencode_opts = vim.tbl_deep_extend('force', {
+        provider = {
+          enabled = 'snacks',
+          snacks = {
+            command = { 'opencode', '--port', '31337' },
+            floating = {
+              border = 'rounded',
+              winblend = 5,
+            },
+          },
+        },
+      }, vim.g.opencode_opts or {})
+    end,
+  },
 }

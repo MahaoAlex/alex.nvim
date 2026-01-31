@@ -156,6 +156,8 @@ return {
       'goimports',
       'goimports-reviser',
       'gofumpt',
+      'black',
+      'isort',
       'prettier',
       'prettierd',
       'markdownlint',

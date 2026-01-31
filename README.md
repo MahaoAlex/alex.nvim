@@ -1,9 +1,13 @@
-# ☄️ Mars.nvim
+# ☄️ Mars.nvim (Alex Edition)
 
 [English](README.md) | [中文](README_zh.md)
 
 Personal Neovim and tmux configuration with a focus on modern development experience, AI-assisted coding, and productivity.
-Based on [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim).
+
+This is a customized fork for **Alex**, based on the excellent [Mars.nvim](https://github.com/MarsWang42/mars.nvim) (which itself is based on [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)).
+
+> [!IMPORTANT]
+> **Respecting Original Authors:** This project is a fork of [Mars.nvim](https://github.com/MarsWang42/mars.nvim). All credit for the core architecture and plugin selection goes to the original author. This version includes specific tweaks and fixes for Alex's environment.
 
 ![Screenshot](Screenshot.png)
 
@@ -14,7 +18,7 @@ Based on [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim).
 - **Neovim** ≥ 0.10 (recommended: 0.11+)
 - **Git**
 - **A Nerd Font** (for icons)
-- **Node.js** (for LSP servers)
+- **Node.js** (for LSP servers) - *Note: If installing via Nodesource, `npm` is included. Avoid installing `npm` separately to prevent conflicts.*
 - **ripgrep** (for telescope grep)
 
 ### Quick Install
@@ -25,6 +29,16 @@ cd ~/.config/mars.nvim
 chmod +x install.sh
 ./install.sh
 ```
+
+---
+
+## 🛠️ Alex's Customizations
+
+- **Environment Fixes:** Resolved package conflicts between `nodejs` and `npm` on Ubuntu systems.
+- **AI Integration:** Optimized configurations for Claude and Gemini companions.
+- **Workflow Tweaks:** (Add specific tweaks here as needed)
+
+---
 
 The install script will:
 - Create symlinks in `~/.config/nvim` and `~/.config/tmux`
