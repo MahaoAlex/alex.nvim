@@ -238,7 +238,7 @@ require('lazy').setup({
     },
   },
   {
-    url = 'https://codeberg.org/andy/leap.nvim',
+    url = 'https://codeberg.org/andy/leap.nvim.git',
     config = function()
       vim.keymap.set({ 'n', 'x', 'o' }, 'e', '<Plug>(leap)')
       vim.keymap.set('n', 'E', '<Plug>(leap-from-window)')
