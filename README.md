@@ -76,7 +76,7 @@ The install script will:
 | Plugin | Description | Key Bindings |
 |--------|-------------|--------------|
 | **[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)** | Fuzzy finder for files, grep, and more | `<C-p>` files, `<leader>sg` grep |
-| **[leap.nvim](https://github.com/ggandor/leap.nvim)** | Lightning-fast motion anywhere on screen | `e` to leap, `E` cross-window |
+| **[leap.nvim](https://codeberg.org/andy/leap.nvim)** | Lightning-fast motion anywhere on screen | `e` to leap, `E` cross-window |
 | **[grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim)** | Find and replace across files | `<leader>gs` |
 
 **Telescope shortcuts:**

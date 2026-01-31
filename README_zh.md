@@ -76,7 +76,7 @@ chmod +x install.sh
 | 插件 | 描述 | 快捷键 |
 |------|------|--------|
 | **[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)** | 模糊搜索文件、内容等 | `<C-p>` 文件, `<leader>sg` 搜索 |
-| **[leap.nvim](https://github.com/ggandor/leap.nvim)** | 闪 电般的屏幕内跳转 | `e` 跳转, `E` 跨窗口 |
+| **[leap.nvim](https://codeberg.org/andy/leap.nvim)** | 闪 电般的屏幕内跳转 | `e` 跳转, `E` 跨窗口 |
 | **[grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim)** | 跨文件查找替换 | `<leader>gs` |
 
 **Telescope 快捷键：**
