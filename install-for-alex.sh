@@ -31,16 +31,17 @@ if command -v opencode >/dev/null 2>&1; then
     info "检测到 opencode 已安装：$(opencode --version 2>/dev/null || true)"
 else
     if command -v npm >/dev/null 2>&1; then
-        info "未检测到 opencode，尝试通过 npm 安装 @opencode-ai/cli ..."
+        info "未检测到 opencode，尝试通过 npm 安装 opencode-ai ..."
         # 需要网络；失败不阻断整体安装流程
-        if npm install -g @opencode-ai/cli; then
+        if npm install -g opencode-ai; then
             info "opencode 安装完成：$(opencode --version 2>/dev/null || true)"
             warn "首次使用建议执行：opencode init（可选）以及 opencode auth login（如需要登录）"
         else
-            warn "opencode 安装失败（不影响 Neovim 其他功能）。你可以稍后手动执行：npm install -g @opencode-ai/cli"
+            warn "opencode 安装失败（不影响 Neovim 其他功能）。你可以稍后手动执行：npm install -g opencode-ai"
+            warn "或使用官方脚本：curl -fsSL https://opencode.ai/install | bash"
         fi
     else
-        warn "未检测到 npm，跳过 opencode 安装。请确认 nodejs/npm 已正确安装后再执行：npm install -g @opencode-ai/cli"
+        warn "未检测到 npm，跳过 opencode 安装。请确认 nodejs/npm 已正确安装后再执行：npm install -g opencode-ai"
     fi
 fi
 

@@ -315,6 +315,11 @@ require('lazy').setup({
   require 'mars.plugins.gitsigns',
   require 'mars.plugins.greeter',
 }, {
+  concurrency = 2,
+  timeout = 600,
+  git = {
+    timeout = 600,
+  },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',
