@@ -226,7 +226,6 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs',
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
       auto_install = true,
@@ -236,6 +235,13 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
+    config = function(_, opts)
+      local ok, configs = pcall(require, 'nvim-treesitter.configs')
+      if not ok then
+        return
+      end
+      configs.setup(opts)
+    end,
   },
   {
     url = 'https://codeberg.org/andyg/leap.nvim.git',
