@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # install-for-alex-wsl2.sh
-# 针对 WSL2 (Ubuntu 24.04) 的一键部署脚本
+# One-click setup for WSL2 (Ubuntu 24.04)
 
 set -e
 
-# 颜色定义
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -20,15 +20,15 @@ CONFIG_DIR="${HOME}/.config"
 NEOVIM_VERSION="0.11.6"
 NEOVIM_APPIMAGE_URL="https://github.com/neovim/neovim/releases/download/v${NEOVIM_VERSION}/nvim-linux-x86_64.appimage"
 
-info "开始为 Alex 在 WSL2 (Ubuntu 24.04) 部署 Neovim 配置..."
+info "Starting Neovim setup for Alex on WSL2 (Ubuntu 24.04)..."
 
-# 0. 检查是否在 WSL 环境
+# 0. Check WSL environment
 if ! grep -qi "microsoft" /proc/version; then
-    warn "未检测到 WSL 特征（/proc/version）。将继续执行，但建议确认环境。"
+    warn "WSL signature not detected (/proc/version). Continuing, but please verify the environment."
 fi
 
-# 1. 系统依赖安装
-info "检查并安装系统依赖..."
+# 1. System dependencies
+info "Checking and installing system dependencies..."
 sudo apt update
 sudo apt install -y \
     git curl unzip gcc g++ make \
@@ -37,50 +37,50 @@ sudo apt install -y \
     nodejs npm \
     libfuse2 ca-certificates
 
-# 1.1 安装或升级 Neovim (AppImage)
-info "检查 Neovim 版本..."
+# 1.1 Install or upgrade Neovim (AppImage)
+info "Checking Neovim version..."
 NEED_NVIM_INSTALL=1
 if command -v nvim >/dev/null 2>&1; then
     CURRENT_VER="$(nvim --version | awk 'NR==1{print $2}' | sed 's/^v//')"
     if [ -n "$CURRENT_VER" ] && dpkg --compare-versions "$CURRENT_VER" ge "0.11.0"; then
-        info "检测到 Neovim 版本 $CURRENT_VER，满足要求，跳过安装。"
+        info "Detected Neovim $CURRENT_VER, meets requirements, skipping install."
         NEED_NVIM_INSTALL=0
     else
-        warn "检测到 Neovim 版本 $CURRENT_VER，准备升级至 ${NEOVIM_VERSION}。"
+        warn "Detected Neovim $CURRENT_VER, upgrading to ${NEOVIM_VERSION}."
     fi
 fi
 
 if [ "$NEED_NVIM_INSTALL" -eq 1 ]; then
-    info "安装 Neovim AppImage v${NEOVIM_VERSION}..."
+    info "Installing Neovim AppImage v${NEOVIM_VERSION}..."
     sudo curl -fsSL -o /usr/local/bin/nvim "${NEOVIM_APPIMAGE_URL}"
     sudo chmod +x /usr/local/bin/nvim
     hash -r
     nvim --version | head -n 1 || true
 fi
 
-# 1.2 安装 OpenCode CLI（用于 Neovim 内 opencode.nvim）
+# 1.2 Install OpenCode CLI (for opencode.nvim inside Neovim)
 if command -v opencode >/dev/null 2>&1; then
-    info "检测到 opencode 已安装：$(opencode --version 2>/dev/null || true)"
+    info "Detected opencode: $(opencode --version 2>/dev/null || true)"
 else
     if command -v npm >/dev/null 2>&1; then
-        info "未检测到 opencode，尝试通过 npm 安装 opencode-ai ..."
+        info "opencode not found, trying to install opencode-ai via npm ..."
         if npm install -g opencode-ai; then
-            info "opencode 安装完成：$(opencode --version 2>/dev/null || true)"
-            warn "首次使用建议执行：opencode init（可选）以及 opencode auth login（如需要登录）"
+            info "opencode installed: $(opencode --version 2>/dev/null || true)"
+            warn "First-time use: opencode init (optional) and opencode auth login (if needed)"
         else
-            warn "opencode 安装失败（不影响 Neovim 其他功能）。你可以稍后手动执行：npm install -g opencode-ai"
-            warn "或使用官方脚本：curl -fsSL https://opencode.ai/install | bash"
+            warn "opencode install failed (does not affect other features). You can run: npm install -g opencode-ai"
+            warn "Or use the official script: curl -fsSL https://opencode.ai/install | bash"
         fi
     else
-        warn "未检测到 npm，跳过 opencode 安装。请确认 nodejs/npm 已正确安装后再执行：npm install -g opencode-ai"
+        warn "npm not found, skipping opencode install. Ensure nodejs/npm is installed, then run: npm install -g opencode-ai"
     fi
 fi
 
-# 1.3 WSL2 剪贴板支持（win32yank.exe）
+# 1.3 WSL2 clipboard support (win32yank.exe)
 if command -v win32yank.exe >/dev/null 2>&1; then
-    info "检测到 win32yank.exe，WSL 剪贴板支持已可用。"
+    info "Detected win32yank.exe, WSL clipboard support is ready."
 else
-    info "安装 WSL 剪贴板工具 win32yank.exe ..."
+    info "Installing WSL clipboard tool win32yank.exe ..."
     mkdir -p "${HOME}/.local/bin"
     curl -fsSL -o "${HOME}/.local/bin/win32yank.exe" \
         "https://github.com/equalsraf/win32yank/releases/latest/download/win32yank.exe"
@@ -91,7 +91,7 @@ if ! echo "$PATH" | tr ':' '\n' | grep -qx "${HOME}/.local/bin"; then
     export PATH="${HOME}/.local/bin:${PATH}"
 fi
 
-# 2. 备份旧配置
+# 2. Backup existing config
 backup_config() {
     local dir=$1
     if [ -d "$dir" ] || [ -L "$dir" ]; then
@@ -101,20 +101,20 @@ backup_config() {
     fi
 }
 
-info "清理旧配置..."
+info "Cleaning old config..."
 backup_config "${CONFIG_DIR}/nvim"
 backup_config "${HOME}/.local/share/nvim"
 backup_config "${HOME}/.local/state/nvim"
 backup_config "${HOME}/.cache/nvim"
 
-# 3. 创建配置链接
+# 3. Create config symlinks
 info "创建配置符号链接..."
 mkdir -p "$CONFIG_DIR"
 ln -s "$SCRIPT_DIR/nvim" "${CONFIG_DIR}/nvim"
 
-# 4. Tmux 配置 (可选)
+# 4. Tmux config (optional)
 if [ -d "$SCRIPT_DIR/tmux" ]; then
-    info "配置 Tmux..."
+    info "Configuring Tmux..."
     backup_config "${CONFIG_DIR}/tmux"
     mkdir -p "${CONFIG_DIR}/tmux"
     ln -s "$SCRIPT_DIR/tmux/tmux.conf" "${CONFIG_DIR}/tmux/tmux.conf"
@@ -123,16 +123,16 @@ if [ -d "$SCRIPT_DIR/tmux" ]; then
     fi
 fi
 
-# 5. 预热 Neovim (自动下载插件)
-info "正在启动 Neovim 以自动安装插件 (请耐心等待，完成后手动退出)..."
+# 5. Warm up Neovim (auto download plugins)
+info "Launching Neovim to auto-install plugins (please wait, exit when done)..."
 nvim --headless "+Lazy! sync" +qa
 
-info "部署完成！"
+info "Setup complete!"
 echo -e "${GREEN}--------------------------------------------------${NC}"
-echo -e "现在你可以输入 ${YELLOW}nvim${NC} 开启你的开发之旅了。"
-echo -e "针对 40% 键盘的特别提醒："
-echo -e "- 使用 ${YELLOW};${NC} 代替 ${YELLOW}:${NC} 进入命令模式"
-echo -e "- 使用 ${YELLOW}jk${NC} 快速退出插入模式"
-echo -e "- 使用 ${YELLOW}H / L${NC} 切换文件标签"
-echo -e "- 使用 ${YELLOW}Space + e${NC} 打开文件树"
+echo -e "You can now run ${YELLOW}nvim${NC} to start."
+echo -e "Notes for a 40% keyboard:"
+echo -e "- Use ${YELLOW};${NC} instead of ${YELLOW}:${NC} for command mode"
+echo -e "- Use ${YELLOW}jk${NC} to exit insert mode"
+echo -e "- Use ${YELLOW}H / L${NC} to switch buffers"
+echo -e "- Use ${YELLOW}Space + e${NC} to toggle the file tree"
 echo -e "${GREEN}--------------------------------------------------${NC}"

@@ -5,12 +5,12 @@ end
 
 packer.startup({
   function(use)
-    -- 你的插件列表...
+    -- Your plugin list...
     -- use 'neovim/nvim-lspconfig'
     -- ...
   end,
   config = {
-    max_jobs = 2, -- 把并发数降到最低，避免网络拥堵
-    clone_timeout = 600, -- 延长超时时间到 10 分钟
+    max_jobs = 2, -- Keep concurrency low to avoid network congestion
+    clone_timeout = 600, -- Extend timeout to 10 minutes
   },
 })
