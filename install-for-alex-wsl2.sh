@@ -15,6 +15,29 @@ info() { echo -e "${GREEN}[INFO]${NC} $1"; }
 warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
 
+download_with_fallback() {
+    local url="$1"
+    local output="$2"
+    local proxy1="https://ghproxy.com/${url}"
+    local proxy2="https://mirror.ghproxy.com/${url}"
+
+    for candidate in "$url" "$proxy1" "$proxy2"; do
+        info "Downloading: ${candidate}"
+        if curl -fsSL \
+            --retry 3 \
+            --retry-delay 1 \
+            --retry-all-errors \
+            --connect-timeout 10 \
+            --max-time 120 \
+            -o "$output" \
+            "$candidate"; then
+            return 0
+        fi
+        warn "Download failed: ${candidate}"
+    done
+    return 1
+}
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="${HOME}/.config"
 NEOVIM_VERSION="0.11.6"
@@ -52,7 +75,9 @@ fi
 
 if [ "$NEED_NVIM_INSTALL" -eq 1 ]; then
     info "Installing Neovim AppImage v${NEOVIM_VERSION}..."
-    sudo curl -fsSL -o /usr/local/bin/nvim "${NEOVIM_APPIMAGE_URL}"
+    if ! download_with_fallback "${NEOVIM_APPIMAGE_URL}" "/usr/local/bin/nvim"; then
+        error "Failed to download Neovim AppImage."
+    fi
     sudo chmod +x /usr/local/bin/nvim
     hash -r
     nvim --version | head -n 1 || true
@@ -82,9 +107,16 @@ if command -v win32yank.exe >/dev/null 2>&1; then
 else
     info "Installing WSL clipboard tool win32yank.exe ..."
     mkdir -p "${HOME}/.local/bin"
-    curl -fsSL -o "${HOME}/.local/bin/win32yank.exe" \
-        "https://github.com/equalsraf/win32yank/releases/latest/download/win32yank.exe"
+    tmp_dir="$(mktemp -d)"
+    if ! download_with_fallback \
+        "https://github.com/equalsraf/win32yank/releases/latest/download/win32yank-x64.zip" \
+        "${tmp_dir}/win32yank.zip"; then
+        error "Failed to download win32yank."
+    fi
+    unzip -q "${tmp_dir}/win32yank.zip" -d "${tmp_dir}"
+    mv "${tmp_dir}/win32yank.exe" "${HOME}/.local/bin/win32yank.exe"
     chmod +x "${HOME}/.local/bin/win32yank.exe"
+    rm -rf "${tmp_dir}"
 fi
 
 if ! echo "$PATH" | tr ':' '\n' | grep -qx "${HOME}/.local/bin"; then
