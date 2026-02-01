@@ -85,9 +85,10 @@ return {
       vim.g.opencode_opts = vim.tbl_deep_extend('force', {
         provider = {
           enabled = 'snacks',
+          cmd = 'opencode',
           snacks = {
-            command = { 'opencode', '--port', '31337' },
-            floating = {
+            auto_close = false,
+            win = {
               border = 'rounded',
               winblend = 5,
             },
