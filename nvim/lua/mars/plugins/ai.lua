@@ -59,8 +59,20 @@ return {
         mode = { 'n', 'x' },
         desc = 'Opencode: Ask current context',
       },
-      { '<leader>ot', '<cmd>OpencodeToggle<cr>', desc = 'Opencode: Toggle panel' },
-      { '<leader>os', '<cmd>OpencodeSelect<cr>', desc = 'Opencode: Select prompt' },
+      {
+        '<leader>ot',
+        function()
+          require('opencode').toggle()
+        end,
+        desc = 'Opencode: Toggle panel',
+      },
+      {
+        '<leader>os',
+        function()
+          require('opencode').select()
+        end,
+        desc = 'Opencode: Select prompt',
+      },
       {
         '<leader>oc',
         function()
