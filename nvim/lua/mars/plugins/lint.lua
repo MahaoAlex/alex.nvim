@@ -9,6 +9,16 @@ return {
         typescript = { 'eslint' },
       }
 
+      local markdownlint = lint.linters.markdownlint
+      if markdownlint then
+        markdownlint.args = vim.list_extend(markdownlint.args or {}, {
+          '--disable',
+          'MD013',
+          'MD024',
+          'MD036',
+        })
+      end
+
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = lint_augroup,
