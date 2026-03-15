@@ -24,6 +24,14 @@ vim.keymap.set('n', '<leader>j', '<C-w>j', { desc = 'Move to bottom window' })
 vim.keymap.set('n', '<leader>k', '<C-w>k', { desc = 'Move to top window' })
 vim.keymap.set('n', '<leader>l', '<C-w>l', { desc = 'Move to right window' })
 
+-- Split windows
+vim.keymap.set('n', '<leader>ws', '<cmd>split<CR>', { desc = 'Horizontal split' })
+vim.keymap.set('n', '<leader>wv', '<cmd>vsplit<CR>', { desc = 'Vertical split' })
+
+-- Split terminal
+vim.keymap.set('n', '<leader>wts', '<cmd>split | terminal<CR>', { desc = 'Horizontal split terminal' })
+vim.keymap.set('n', '<leader>wtv', '<cmd>vsplit | terminal<CR>', { desc = 'Vertical split terminal' })
+
 -- File Explorer
 vim.keymap.set('n', '<leader>e', '<cmd>Neotree toggle<cr>', { desc = 'Toggle Explorer' })
 
